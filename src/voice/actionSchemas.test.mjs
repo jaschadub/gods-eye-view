@@ -38,11 +38,12 @@ test('the complete Realtime tool payload pins the manifest-generated layer relea
     // omit top-level anyOf (OpenAI rejects it). Contacts list routing preserves
     // requested radius and center authority in descriptions only.
     // Street Level and GNSS extend the manifest; tracked and analyst aircraft describe broadcasts.
+    // Internet Health (IODA) extends the manifest with one analyst layer.
     // Air quality (ECCC AQHI) extends the manifest.
     // Globe rotation adds one motion; visual keyhole fit and explicit
     // reset guidance/defaults update only move_camera and mode descriptions.
     // Restore base descriptions; append only globe-rotation defaults and fit guidance.
-    '967b5a043b812e2f8c1e190fc571cf12b960c9d4486df736902221aab4d99cf6',
+    'de10ca9b23d4b1b2111236485a1457d6f52f36fa37e632590e27dd6e61472023',
   );
 });
 

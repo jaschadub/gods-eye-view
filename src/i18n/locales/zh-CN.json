@@ -2818,5 +2818,10 @@
   "Layers": "图层",
   "Search": "搜索",
   "More": "更多",
-  "Panels": "面板"
+  "Panels": "面板",
+  "Internet Health": "互联网健康",
+  "Internet health feed is stale (showing last good snapshot)": "互联网健康数据已过时（显示最后一次有效快照）",
+  "Internet health unavailable": "互联网健康数据不可用",
+  "Internet health feed rate limited (HTTP 429)": "互联网健康数据请求受限（HTTP 429）",
+  "Malformed internet health snapshot": "互联网健康快照格式错误"
 }

@@ -2952,5 +2952,10 @@
   "Layers": "Capas",
   "Search": "Buscar",
   "More": "Más",
-  "Panels": "Paneles"
+  "Panels": "Paneles",
+  "Internet Health": "Salud de Internet",
+  "Internet health feed is stale (showing last good snapshot)": "El feed de salud de Internet está desactualizado (se muestra la última instantánea válida)",
+  "Internet health unavailable": "Salud de Internet no disponible",
+  "Internet health feed rate limited (HTTP 429)": "Feed de salud de Internet limitado por frecuencia (HTTP 429)",
+  "Malformed internet health snapshot": "Instantánea de salud de Internet mal formada"
 }

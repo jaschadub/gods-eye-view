@@ -3019,5 +3019,10 @@
   "Layers": "Слои",
   "Search": "Поиск",
   "More": "Ещё",
-  "Panels": "Панели"
+  "Panels": "Панели",
+  "Internet Health": "Состояние интернета",
+  "Internet health feed is stale (showing last good snapshot)": "Данные о состоянии интернета устарели (показан последний корректный снимок)",
+  "Internet health unavailable": "Данные о состоянии интернета недоступны",
+  "Internet health feed rate limited (HTTP 429)": "Лимит запросов к данным о состоянии интернета (HTTP 429)",
+  "Malformed internet health snapshot": "Некорректный снимок состояния интернета"
 }

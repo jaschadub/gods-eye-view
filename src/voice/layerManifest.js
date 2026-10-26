@@ -58,6 +58,15 @@ const layers = [
     noQuery: 'navigation-integrity cells; no countable analyst records',
   },
   {
+    id: 'internet-health',
+    aliases: ['internet outages', 'outages'],
+    context: false,
+    query: {
+      fields: { country: ['t'], score: ['n'], cableLandings: ['n'] },
+      window: 'last 24 h',
+    },
+  },
+  {
     id: 'flights',
     track: true,
     aliases: ['planes', 'aircraft', 'air traffic'],

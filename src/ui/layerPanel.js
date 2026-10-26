@@ -76,6 +76,10 @@ const PANEL_GROUPS = [
     ],
   },
   {
+    label: msg('Cyber'),
+    ids: ['internet-health'],
+  },
+  {
     label: msg('Weather'),
     ids: [
       'air-quality',

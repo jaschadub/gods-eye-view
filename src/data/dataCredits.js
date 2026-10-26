@@ -147,6 +147,13 @@ export const DATA_CREDITS = [
       '(API documentation and rate limits)',
   },
   {
+    key: 'ioda',
+    html:
+      'Internet outages: ' +
+      '<a href="https://ioda.inetintel.cc.gatech.edu/" target="_blank" rel="noopener">IODA</a>, ' +
+      'Internet Intelligence Lab, Georgia Institute of Technology',
+  },
+  {
     key: 'usgs',
     html: 'Earthquakes: Data courtesy of the U.S. Geological Survey',
   },
