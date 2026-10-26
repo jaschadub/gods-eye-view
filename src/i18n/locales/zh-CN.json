@@ -2820,8 +2820,11 @@
   "More": "更多",
   "Panels": "面板",
   "Internet Health": "互联网健康",
-  "Internet health feed is stale (showing last good snapshot)": "互联网健康数据已过时（显示最后一次有效快照）",
-  "Internet health unavailable": "互联网健康数据不可用",
-  "Internet health feed rate limited (HTTP 429)": "互联网健康数据请求受限（HTTP 429）",
-  "Malformed internet health snapshot": "互联网健康快照格式错误"
+  "Cyber: Radar internet-outage annotations and BGP hijack / route-leak events. Free: an API token with Radar read permission": "网络安全：Radar 互联网中断标注及 BGP 劫持/路由泄露事件。免费：具有 Radar 读取权限的 API 令牌",
+  "Cyber: adds ThreatFox C2 indicators to C2 Clusters (Feodo Tracker works without a key)": "网络安全：为 C2 集群添加 ThreatFox C2 指标（Feodo Tracker 无需密钥）",
+  "Cyber: per-country counts of exposed ICS, RDP, database and SMB services (count queries spend no query credits)": "网络安全：按国家统计暴露的 ICS、RDP、数据库和 SMB 服务数量（计数查询不消耗查询额度）",
+  "Radar Outages": "Radar 中断",
+  "BGP Events": "BGP 事件",
+  "C2 Clusters": "C2 集群",
+  "Exposure": "暴露面"
 }

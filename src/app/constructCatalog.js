@@ -28,6 +28,12 @@ import { createApplicationAirQuality } from './layers/airQuality.js';
 import { createApplicationFirePerimeters } from './layers/perimeters.js';
 import { createApplicationGnssIntegrity } from './layers/gnss.js';
 import { createApplicationInternetHealth } from './layers/internetHealth.js';
+import {
+  createApplicationC2Clusters,
+  createApplicationRadarOutages,
+  createApplicationBgpEvents,
+  createApplicationExposure,
+} from './layers/cyber.js';
 import { createApplicationCables } from './layers/submarineCables.js';
 import { createApplicationStreetLevel } from './layers/streetLevel.js';
 import { createInfrastructureLayers } from '../data/infrastructure.js';
@@ -130,6 +136,10 @@ export function createApplicationCatalog({
         createApplicationInternetHealth({
           source: sources['internet-health'],
         }),
+        createApplicationRadarOutages({ source: sources['radar-outages'] }),
+        createApplicationBgpEvents({ source: sources['bgp-events'] }),
+        createApplicationC2Clusters({ source: sources['c2-clusters'] }),
+        createApplicationExposure({ source: sources.exposure }),
         createApplicationAlpr({ surface, source: sources.alpr }),
         createApplicationStreetLevel({
           surface,

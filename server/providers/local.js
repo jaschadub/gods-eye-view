@@ -27,6 +27,9 @@ import { weatherProxy } from './weather.js';
 import { firePerimetersProxy } from './firePerimeters.js';
 import { gnssIntegrityProxy } from './gnssIntegrity.js';
 import { internetHealthProxy } from './internetHealth.js';
+import { c2ClustersProxy } from './c2Clusters.js';
+import { radarOutagesProxy, bgpEventsProxy } from './cloudflareRadar.js';
+import { shodanExposureProxy } from './shodanExposure.js';
 import { cycloneProxy } from './cyclones.js';
 import { windProxy } from './wind.js';
 
@@ -66,6 +69,10 @@ function localProviderPlugins({ realtime, gemini } = {}) {
     firePerimetersProxy(),
     gnssIntegrityProxy(),
     internetHealthProxy(),
+    radarOutagesProxy(),
+    bgpEventsProxy(),
+    c2ClustersProxy(),
+    shodanExposureProxy(),
     keySetupEndpoint(),
   ];
 }

@@ -347,10 +347,11 @@ test('deixis prompt lint: one short rule, and every sentinel it names exists in 
   // characters. It was 56,308 after the area/imagery/OSM merge; stating each
   // policy once (WHERE precedence, AREAS routing, AFTER TOOLS speech) brought
   // it to 51,646. A new tool or rule has to fit under this ceiling.
-  // Internet Health (country/score/cableLandings analyst fields) adds 142
-  // chars to a 51,972 baseline; the ceiling moves by 150 for it.
+  // The cyber layer pack (Internet Health, Radar Outages, BGP Events, C2
+  // Clusters, Exposure — two or three analyst fields each) adds 519 chars to
+  // a 51,972 baseline; the ceiling moves to 52,500 for it.
   const size = instructions.length + JSON.stringify(GEV_REALTIME_TOOLS).length;
-  assert.ok(size <= 52150, `prompt size ${size}`);
+  assert.ok(size <= 52500, `prompt size ${size}`);
 });
 
 test('after-tool speech allows returned items to answer requested lists and rankings', () => {

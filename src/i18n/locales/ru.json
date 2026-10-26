@@ -3021,8 +3021,11 @@
   "More": "Ещё",
   "Panels": "Панели",
   "Internet Health": "Состояние интернета",
-  "Internet health feed is stale (showing last good snapshot)": "Данные о состоянии интернета устарели (показан последний корректный снимок)",
-  "Internet health unavailable": "Данные о состоянии интернета недоступны",
-  "Internet health feed rate limited (HTTP 429)": "Лимит запросов к данным о состоянии интернета (HTTP 429)",
-  "Malformed internet health snapshot": "Некорректный снимок состояния интернета"
+  "Cyber: Radar internet-outage annotations and BGP hijack / route-leak events. Free: an API token with Radar read permission": "Кибер: аннотации интернет-отключений Radar и события BGP — перехваты и утечки маршрутов. Бесплатно: API-токен с правом чтения Radar",
+  "Cyber: adds ThreatFox C2 indicators to C2 Clusters (Feodo Tracker works without a key)": "Кибер: добавляет индикаторы C2 из ThreatFox в «Кластеры C2» (Feodo Tracker работает без ключа)",
+  "Cyber: per-country counts of exposed ICS, RDP, database and SMB services (count queries spend no query credits)": "Кибер: число открытых служб ICS, RDP, баз данных и SMB по странам (запросы подсчёта не расходуют кредиты)",
+  "Radar Outages": "Отключения (Radar)",
+  "BGP Events": "События BGP",
+  "C2 Clusters": "Кластеры C2",
+  "Exposure": "Открытость"
 }

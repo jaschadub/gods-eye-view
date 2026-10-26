@@ -135,6 +135,36 @@ export const KEY_SETUP_KEYS = Object.freeze([
     envVars: Object.freeze(['LL2_API_TOKEN']),
     tier: 'paid',
   }),
+  Object.freeze({
+    id: 'cloudflare-radar',
+    title: 'CLOUDFLARE RADAR', // i18n-ignore: provider product name
+    unlocks: msg(
+      'Cyber: Radar internet-outage annotations and BGP hijack / route-leak events. Free: an API token with Radar read permission',
+    ),
+    getUrl: 'https://dash.cloudflare.com/profile/api-tokens',
+    envVars: Object.freeze(['CLOUDFLARE_RADAR_TOKEN']),
+    tier: 'free',
+  }),
+  Object.freeze({
+    id: 'threatfox',
+    title: 'THREATFOX', // i18n-ignore: provider product name
+    unlocks: msg(
+      'Cyber: adds ThreatFox C2 indicators to C2 Clusters (Feodo Tracker works without a key)',
+    ),
+    getUrl: 'https://auth.abuse.ch/',
+    envVars: Object.freeze(['THREATFOX_AUTH_KEY']),
+    tier: 'free',
+  }),
+  Object.freeze({
+    id: 'shodan',
+    title: 'SHODAN', // i18n-ignore: provider product name
+    unlocks: msg(
+      'Cyber: per-country counts of exposed ICS, RDP, database and SMB services (count queries spend no query credits)',
+    ),
+    getUrl: 'https://account.shodan.io/',
+    envVars: Object.freeze(['SHODAN_API_KEY']),
+    tier: 'paid',
+  }),
 ]);
 
 /** Hostnames a Provider Settings request may arrive under or originate from. */

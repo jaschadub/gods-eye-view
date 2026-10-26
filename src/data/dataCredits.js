@@ -154,6 +154,31 @@ export const DATA_CREDITS = [
       'Internet Intelligence Lab, Georgia Institute of Technology',
   },
   {
+    key: 'cloudflare-radar',
+    html:
+      'Outage annotations &amp; BGP events: ' +
+      '<a href="https://radar.cloudflare.com/" target="_blank" rel="noopener">Cloudflare Radar</a> (CC BY-NC 4.0)',
+  },
+  {
+    key: 'abuse-ch',
+    html:
+      'Botnet C2 indicators: ' +
+      '<a href="https://feodotracker.abuse.ch/" target="_blank" rel="noopener">abuse.ch Feodo Tracker</a> &amp; ' +
+      '<a href="https://threatfox.abuse.ch/" target="_blank" rel="noopener">ThreatFox</a> (CC0)',
+  },
+  {
+    key: 'ip-location-db',
+    html:
+      'IP→country: <a href="https://github.com/sapics/ip-location-db" target="_blank" rel="noopener">ip-location-db</a> ' +
+      'asn-country (CC0), RIR statistics © <a href="https://www.nro.net/" target="_blank" rel="noopener">NRO</a> (CC BY 4.0)',
+  },
+  {
+    key: 'shodan',
+    html:
+      'Exposed-service counts: ' +
+      '<a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a>',
+  },
+  {
     key: 'usgs',
     html: 'Earthquakes: Data courtesy of the U.S. Geological Survey',
   },

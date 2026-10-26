@@ -2954,8 +2954,11 @@
   "More": "Más",
   "Panels": "Paneles",
   "Internet Health": "Salud de Internet",
-  "Internet health feed is stale (showing last good snapshot)": "El feed de salud de Internet está desactualizado (se muestra la última instantánea válida)",
-  "Internet health unavailable": "Salud de Internet no disponible",
-  "Internet health feed rate limited (HTTP 429)": "Feed de salud de Internet limitado por frecuencia (HTTP 429)",
-  "Malformed internet health snapshot": "Instantánea de salud de Internet mal formada"
+  "Cyber: Radar internet-outage annotations and BGP hijack / route-leak events. Free: an API token with Radar read permission": "Ciber: anotaciones de cortes de Internet de Radar y eventos BGP de secuestro y fuga de rutas. Gratis: un token de API con permiso de lectura de Radar",
+  "Cyber: adds ThreatFox C2 indicators to C2 Clusters (Feodo Tracker works without a key)": "Ciber: añade indicadores C2 de ThreatFox a Clústeres C2 (Feodo Tracker funciona sin clave)",
+  "Cyber: per-country counts of exposed ICS, RDP, database and SMB services (count queries spend no query credits)": "Ciber: recuentos por país de servicios ICS, RDP, bases de datos y SMB expuestos (las consultas de recuento no gastan créditos)",
+  "Radar Outages": "Cortes (Radar)",
+  "BGP Events": "Eventos BGP",
+  "C2 Clusters": "Clústeres C2",
+  "Exposure": "Exposición"
 }

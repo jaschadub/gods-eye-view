@@ -1,10 +1,10 @@
 /**
- * @file Country geometry and cable-landing correlation for Internet Health.
+ * @file Country geometry and cable-landing correlation for the cyber pack.
  *
- * Joins IODA country codes to the bundled Natural Earth countries pack and
+ * Joins ISO-3166 alpha-2 codes to the bundled Natural Earth countries pack and
  * counts TeleGeography submarine-cable landing points inside each country —
- * the first physical/cyber correlation: an outage in a country with few
- * landings is a different story from one in a cable hub.
+ * the pack's physical/cyber correlation: an outage, C2 cluster or BGP event in
+ * a cable hub is a different story from one in a landlocked country.
  *
  * Pure apart from lazy, memoized pack loads; no Cesium.
  */
@@ -101,7 +101,7 @@ let landingsPromise = null;
 const landingCounts = new Map();
 
 /** Lazily load and memoize the geometry packs (one load per page). */
-export async function loadInternetHealthGeometry({ signal } = {}) {
+export async function loadCountryGeometry({ signal } = {}) {
   countriesPromise ??= loadBundledJson(COUNTRIES_URL).then(indexCountries);
   landingsPromise ??= loadBundledJson(LANDINGS_URL).then(landingPoints);
   try {

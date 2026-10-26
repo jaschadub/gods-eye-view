@@ -9,8 +9,8 @@ import {
   indexCountries,
   landingPoints,
   countLandingsIn,
-  loadInternetHealthGeometry,
-} from './geometry.js';
+  loadCountryGeometry,
+} from '../cyber/geometry.js';
 
 test('normalizes the v2 envelope, sorts by score, folds signal keys', () => {
   const rows = normalizeInternetHealthSummary({
@@ -119,7 +119,7 @@ test('counts landing points inside a country polygon', () => {
 });
 
 test('bundled packs join real countries and landings', async () => {
-  const geometry = await loadInternetHealthGeometry();
+  const geometry = await loadCountryGeometry();
   assert.ok(geometry.countries.size > 200);
   assert.ok(geometry.countries.get('EG'));
   // Egypt is a major cable hub; a landlocked country has none.

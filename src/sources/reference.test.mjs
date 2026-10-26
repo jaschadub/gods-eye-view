@@ -19,6 +19,10 @@ test('reference factories retain compatibility without starting acquisition or s
     'cables',
     'gnss-integrity',
     'internet-health',
+    'radar-outages',
+    'bgp-events',
+    'c2-clusters',
+    'exposure',
   ]);
   assert.notEqual(first.earthquakes, second.earthquakes);
   assert.notEqual(first['air-quality'], second['air-quality']);

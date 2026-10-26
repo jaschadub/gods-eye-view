@@ -77,7 +77,13 @@ const PANEL_GROUPS = [
   },
   {
     label: msg('Cyber'),
-    ids: ['internet-health'],
+    ids: [
+      'internet-health',
+      'radar-outages',
+      'bgp-events',
+      'c2-clusters',
+      'exposure',
+    ],
   },
   {
     label: msg('Weather'),

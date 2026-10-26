@@ -67,6 +67,30 @@ const layers = [
     },
   },
   {
+    id: 'radar-outages',
+    aliases: ['radar outages'],
+    context: false,
+    query: { fields: { country: ['t'], cause: ['t'] }, window: 'last 7 d' },
+  },
+  {
+    id: 'bgp-events',
+    aliases: ['bgp hijacks'],
+    context: false,
+    query: { fields: { asn: ['t'], confidence: ['n'] }, window: 'last 7 d' },
+  },
+  {
+    id: 'c2-clusters',
+    aliases: ['c2', 'botnets'],
+    context: false,
+    query: { fields: { country: ['t'], c2Count: ['n'] } },
+  },
+  {
+    id: 'exposure',
+    aliases: ['exposed services'],
+    context: false,
+    query: { fields: { country: ['t'], ics: ['n'] } },
+  },
+  {
     id: 'flights',
     track: true,
     aliases: ['planes', 'aircraft', 'air traffic'],

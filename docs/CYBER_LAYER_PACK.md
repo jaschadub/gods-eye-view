@@ -1,84 +1,98 @@
 # Cyber Layer Pack
 
 Threat-intel layers for God's Eye View that stay inside the project's line:
-they model **networks, infrastructure and events**, never individuals.
+they model **networks, infrastructure and events**, never individuals. All
+geography is **country level**; no indicator IP, host or banner reaches the
+browser.
 
 The pack's thesis is physical/cyber correlation. GEV already ships submarine
-cables, landing points, datacenters, GNSS integrity and military traffic; the
-cyber layers add the network signal so an analyst (or the voice agent) can ask
-"which outage countries have the most cable landings?" or "GNSS anomalies and
-routing changes in the same region".
+cables, landing points, datacenters, GNSS integrity and military traffic.
+Every cyber record carries `cableLandings` (TeleGeography landing points
+inside that country), so the analyst/voice agent can ask questions like
+"which outage countries have the most cable landings?" or "C2 clusters in
+cable-hub countries".
 
-## Status
+## Layers
 
-| #   | Layer                                                                                          | Source                                   | Auth             | Status                 |
-| --- | ---------------------------------------------------------------------------------------------- | ---------------------------------------- | ---------------- | ---------------------- |
-| 1   | **Internet Health** — country connectivity disruption, 24 h                                    | IODA (Georgia Tech) `v2/outages/summary` | 🟢 none          | **Done (this branch)** |
-| 2   | BGP Events — hijack/leak/visibility-drop candidates by origin ASN                              | RIPE RIS Live (WebSocket) + RIPEstat     | 🟢 none          | Planned                |
-| 3   | C2 Clusters — active botnet C2 / IOC infrastructure grouped by ASN and hosting city            | abuse.ch ThreatFox + Feodo Tracker       | 🟡 free Auth-Key | Planned                |
-| 4   | Outage annotations — Cloudflare Radar outage annotations (cause: cable cut, power, government) | Cloudflare Radar                         | 🟡 free token    | Planned                |
-| 5   | Exposure overlay — counts of exposed ICS/OT and camera services per city                       | Shodan / Censys facets                   | 🔴 paid          | Optional               |
+All five sit in the **Cyber** group of the Layers panel.
 
-## 1. Internet Health (implemented)
+| Layer                                                                         | Source                                                    | Key (POWER UP)                        | Window      | Share token |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------- | ----------- | ----------- |
+| **Internet Health**: connectivity disruption score                            | IODA (Georgia Tech) `v2/outages/summary`                  | none                                  | 24 h        | `5`         |
+| **Radar Outages**: outage annotations with cause / type / scope               | Cloudflare Radar `annotations/outages`                    | `CLOUDFLARE_RADAR_TOKEN` (free)       | 7 d         | `7`         |
+| **BGP Events**: hijacks + route leaks, arcs from source to affected countries | Cloudflare Radar `bgp/hijacks/events`, `bgp/leaks/events` | `CLOUDFLARE_RADAR_TOKEN` (free)       | 7 d         | `8`         |
+| **C2 Clusters**: botnet C2 servers per hosting country                        | abuse.ch Feodo Tracker (keyless) + ThreatFox `get_iocs`   | `THREATFOX_AUTH_KEY` (free, optional) | live / 24 h | `6`         |
+| **Exposure**: exposed ICS, RDP, database and SMB services per country         | Shodan `host/count` facets (spends no query credits)      | `SHODAN_API_KEY`                      | cached 6 h  | `9`         |
 
-- **Proxy** `server/providers/internetHealth.js` → `/api/internet-health`.
-  One global 24 h snapshot, cached 5 min, stale fallback up to 1 h, 4 MiB
-  body cap, 15 s timeout, `redirect: 'error'`, per-peer rate limit, 60 s
-  failure cooldown. Only normalized rows leave the proxy.
-- **Records** `src/layers/internetHealth/records.js`: validates the IODA v2
-  envelope and both row shapes; refuses malformed payloads rather than
-  returning partial data. Folds `bgp` / `ping-slash24` / `merit-nt` score keys
-  into `bgp`, `activeProbing` and `telescope` signals. Display bands
-  (severe ≥ 100k, major ≥ 1k, minor) are heuristic: IODA scores are
-  relative.
-- **Geometry** `src/layers/internetHealth/geometry.js` joins ISO-2 codes to
-  the bundled Natural Earth countries pack and counts TeleGeography cable
-  landing points inside each country (`cableLandings`): the first
-  correlation field.
-- **Layer** `src/layers/internetHealth/index.js`: country polygons draped on
-  terrain/3D tiles and shaded by band, plus a score label per country;
-  `getAnalystRecords()` for voice/MCP queries.
-- **Wiring:** catalog, source contract, reference sources, a new **Cyber**
-  panel group, share token `5`, voice manifest (`internet outages`,
-  analyst fields `country`, `score`, `cableLandings`), locale catalogs.
+Shading uses three display bands (red high, amber medium, cyan low). Bands
+are heuristic and documented beside each normalizer; upstream scores are
+relative.
 
-### Notes for review
+| Layer           | High                         | Medium                      | Low              |
+| --------------- | ---------------------------- | --------------------------- | ---------------- |
+| Internet Health | IODA score ≥ 100k            | ≥ 1k                        | else             |
+| Radar Outages   | ongoing nationwide           | ongoing (other)             | ended in window  |
+| BGP Events      | hijacker with confidence ≥ 8 | confidence ≥ 5, or a leaker | affected country |
+| C2 Clusters     | ≥ 25 C2                      | ≥ 5                         | else             |
+| Exposure        | ≥ 100k services              | ≥ 10k                       | else             |
 
-- The voice prompt ceiling in `src/voice/pointAndAsk.test.mjs` moves from
-  52,000 to 52,150. Even a toggle-only manifest entry exceeds the old
-  headroom (28 chars), so any new layer needs this change.
+## Architecture
+
+```
+server/providers/cyber/snapshotProxy.js   shared hardened snapshot proxy
+server/providers/cyber/ipCountry.js       IPv4→country table (ThreatFox)
+server/providers/{internetHealth,cloudflareRadar,c2Clusters,shodanExposure}.js
+src/layers/cyber/geometry.js              Natural Earth countries + cable landings
+src/layers/cyber/countryLayer.js          one Cesium lifecycle for every layer
+src/layers/cyber/source.js                same-origin snapshot source (no_key aware)
+src/layers/{internetHealth,radar,c2Clusters,exposure}/  records + projection
+```
+
+- **Proxy** (`cyberSnapshotProxy`): one cached snapshot per feed, fresh for
+  a per-feed TTL, served stale (with `X-Data-Stale`) up to a limit when the
+  upstream fails, failure cooldown, per-peer rate limit, single-flight loads,
+  fixed upstream origins, `redirect: 'error'`, byte caps, timeouts, sanitized
+  errors. A keyed feed answers `503 {error:'no_key'}` while its env var is
+  unset. Keys never reach the browser.
+- **Records**: each layer's normalizer validates the upstream shape and
+  returns `null` for anything unusable, so a malformed read never replaces
+  the last good snapshot. Cloudflare shapes follow the official
+  `cloudflare-typescript` Radar types.
+- **Projection**: a pure `project(snapshot, geometry)` per layer returns
+  `{countries, arcs?, records}`. `createCyberCountryLayer` does all the
+  Cesium work: polygons draped on terrain / 3D tiles, collision-managed
+  labels, lifted geodesic arcs, analyst records, and `keyRequired` stats that
+  drive the panel's "needs a provider key" guidance.
+- **ThreatFox geography**: ThreatFox IOCs carry no location. The proxy
+  resolves `ip:port` IOCs against `@ip-location-db/asn-country` (CC0;
+  NRO statistics CC BY 4.0). The numeric IPv4 table (~3.5 MB, ~140k
+  ranges) is downloaded once from jsDelivr into `.gev-cache/`, refreshed
+  weekly, and searched with a binary search. IOCs it cannot place are
+  counted as `unlocated`, never guessed.
+- **Voice / MCP**: every layer is in the voice manifest with two or three
+  analyst fields (for example `country`, `c2Count`, `ics`, `asn`,
+  `confidence`, `cause`).
+
+## Review notes
+
+- The voice prompt ceiling (`src/voice/pointAndAsk.test.mjs`) moves from
+  52,000 to 52,500. The pack adds 519 chars to a 51,972 baseline, and even a
+  toggle-only entry overflows the old headroom.
 - The voice schema pins (`actionSchemas.test.mjs`,
-  `firstRunExperience.test.mjs`) and the layer-count and token-ledger fixtures
-  were re-derived for one new layer. The ledger simulations shift by one digit
-  (5 → 6, etc.).
+  `firstRunExperience.test.mjs`) and the layer and registry counts are
+  re-derived.
+- The token-ledger allocation simulations now derive the next free tokens
+  from the real ledger instead of literal digits. The pack used the last free
+  digits (5–9), so the next layer gets `00`.
+- Cloudflare Radar data is CC BY-NC 4.0, so commercial use needs a license
+  from Cloudflare. Shodan use follows Shodan's API terms. See DATA_SOURCES.md.
 
-## 2. BGP Events (next)
+## Ideas not built
 
-- Server-side WebSocket client to `wss://ris-live.ripe.net/v1/ws/` with a
-  bounded ring buffer: subscribe to `UPDATE` with `moreSpecific: true` for
-  watched prefixes, and to a sampled global stream for origin changes.
-- Detectors (pure, testable): MOAS (multiple origins for one prefix),
-  more-specific announcements of a watched prefix, and a sudden drop in
-  visibility (peer count) via RIPEstat `routing-status`.
-- Geography: an ASN maps to a country via RIPEstat `rir-stats-country`. Draw
-  at country/ASN-centroid level, never as precise points.
-- Correlate with Internet Health (same country, same window) and GNSS
-  Integrity (same region).
-
-## 3. C2 Clusters
-
-- ThreatFox `get_iocs` (days=1) and Feodo `ipblocklist.json`, through a
-  keyed server proxy (`THREATFOX_AUTH_KEY`, added in POWER UP).
-- Group IOCs by ASN → hosting country/city; render clustered rings sized by
-  count and colored by malware family. A raw IP is never a map point:
-  geolocation is unreliable for VPN, anycast and cloud addresses.
-- Analyst fields: `asn`, `asName`, `country`, `iocCount`, `families`,
-  `firstSeen`.
-
-## Guardrails
-
-- Same proxy hardening as existing providers: fixed upstream origin, byte
-  caps, timeouts, sanitized errors, no keys in the browser.
-- Coarse geography only: country, city or ASN level.
-- Respect each source's terms. Commercial use of the pack also needs a
-  non-community Cesium/Google tier; see DATA_SOURCES.md.
+- **Prefix Watch**: a RIPE RIS Live WebSocket subscription for a watched list
+  of prefixes and ASNs (MOAS, more-specifics, visibility drops), for
+  monitoring a client's own address space.
+- **Per-capita normalization** for Exposure and C2 (counts currently favor
+  large networks).
+- **City-level C2 clustering**: needs a city-resolution IP table and
+  careful caveats.
